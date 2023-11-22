@@ -14,6 +14,19 @@ const hide = (elem) => {
     elem.style.display = 'none';
 };
 
+const createLi = (title) => {
+    const li = document.createElement('li');
+    li.textContent = title;
+    return li;
+};
+
+const createNoNotesEL = () => {
+    const li = document.createElement('li');
+    li.classList.add('list-group-item', 'text-center');
+    li.textContent = 'No saved Notes';
+    return li;
+};
+
 const getNotes = () => {
     fetch('/api/notes', {
         method: 'GET',
@@ -109,18 +122,17 @@ const handleRenderSaveBtn = () => {
 };
 
 const renderNoteList = async (notes) => {
-    let jsonNotes = await notes.json();
     if (window.location.pathname === '/notes') {
         noteList.forEach((el) => (el.innerHTML = ''));
     }
 
     let noteListItems = [];
 
-    if (jsonNotes.length === 0) {
+    if (notes.length === 0) {
         noteListItems.push(createNoNotesEL());
     }
-    
-    jsonNotes.forEach((note) => {
+
+    notes.forEach((note) => {
         const li = createLi(note.title);
         li.dataset.note = JSON.stringify(note);
         noteListItems.push(li);
@@ -140,6 +152,3 @@ if (window.location.pathname === '/notes') {
     noteText.addEventListener('keyup', handleRenderSaveBtn);
     getAndRenderNotes();
 }
-
-// Remove one of these calls
-getAndRenderNotes();
