@@ -1,5 +1,3 @@
-const { json } = require("express");
-
 const noteTitle = document.querySelector('.note-title');
 const noteText = document.querySelector('.note-textarea');
 const saveNoteBtn = document.querySelector('.save-note');
@@ -30,28 +28,30 @@ const getNotes = () => {
 };
 
 const deleteNote = (id) => {
-    fetch(`/api/notes/${id}`, {
+    return fetch(`/api/notes/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
         },
     })
-    .then((response) => response.json())
     .then(() => {
         getNotes();
         renderActiveNote();
     });
 };
 
-const saveNote = (note) => {
-    fetch('/api/notes', {
+const saveNote = () => {
+    const newNote = {
+        title: noteTitle.value,
+        text: noteText.value,
+    };
+    return fetch('/api/notes', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(note),
+        body: JSON.stringify(newNote),
     })
-    .then((response) => response.json())
     .then(() => {
         getNotes();
         renderActiveNote();
@@ -73,13 +73,7 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
-    const newNote = {
-        title: noteTitle.value,
-        text: noteText.value,
-    };
-    saveNoteBtn.addEventListener('click', () => {
-        saveNote();
-    });
+    saveNote();
 };
 
 const handleNoteDelete = (e) => {
@@ -92,10 +86,7 @@ const handleNoteDelete = (e) => {
         activeNote = {};
     }
 
-    deleteNote(noteId).then(() => {
-        renderActiveNote();
-        getNotes();
-    });
+    deleteNote(noteId);
 };
 
 const handleNoteView = (e) => {
@@ -104,7 +95,7 @@ const handleNoteView = (e) => {
     renderActiveNote();
 };
 
-const handleNewNoteView = (e) => {
+const handleNewNoteView = () => {
     activeNote = {};
     renderActiveNote();
 };
@@ -150,4 +141,5 @@ if (window.location.pathname === '/notes') {
     getAndRenderNotes();
 }
 
+// Remove one of these calls
 getAndRenderNotes();
