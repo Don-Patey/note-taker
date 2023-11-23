@@ -79,7 +79,7 @@ const saveNote = () => {
     })
     .catch((error) => {
         console.error('Error saving note:', error);
-        throw error; // rethrow the error to propagate it
+        throw error; // 
     });
 };
 
@@ -122,7 +122,7 @@ const handleNoteDelete = (e) => {
 
 const handleNoteView = (e) => {
     e.preventDefault();
-    const clickedElement = e.target.closest('li');
+    const clickedElement = e.target.closest('.list-group-item');
     if (clickedElement) {
         const noteData = clickedElement.dataset.note;
         console.log('note Data:', noteData);
@@ -138,6 +138,8 @@ const handleNoteView = (e) => {
 };
 
 const handleClearForm = () => {
+    noteTitle.value = '';
+    noteText.value = '';
     activeNote = {};
     renderActiveNote();
 };
