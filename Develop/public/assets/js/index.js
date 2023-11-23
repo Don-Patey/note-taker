@@ -121,6 +121,7 @@ const handleNoteDelete = (e) => {
 };
 
 const handleNoteView = (e) => {
+    console.log('handleNoteView');
     e.preventDefault();
     const clickedElement = e.target.closest('.list-group-item');
     if (clickedElement) {
@@ -138,6 +139,7 @@ const handleNoteView = (e) => {
 };
 
 const handleClearForm = () => {
+    console.log('clear form');
     noteTitle.value = '';
     noteText.value = '';
     activeNote = {};
