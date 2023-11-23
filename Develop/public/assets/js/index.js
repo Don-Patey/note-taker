@@ -134,8 +134,9 @@ const handleRenderSaveBtn = () => {
 
 const renderNoteList = async (notes) => {
     if (window.location.pathname === '/notes') {
-        noteList.forEach((el) => (el.innerHTML = ''));
-    }
+        noteList.forEach((el) => {
+            el.innerHTML = '';
+    });
 
     let noteListItems = [];
 
