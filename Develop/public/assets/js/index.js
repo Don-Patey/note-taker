@@ -106,11 +106,16 @@ const handleNoteView = (e) => {
     e.preventDefault();
     const clickedElement = e.target.closest('li');
     if (clickedElement) {
-        console.log(clickedElement);
-        console.log(clickedElement.dataset.note);
-        activeNote = JSON.parse(clickedElement.dataset.note);
-        renderActiveNote();
+        const noteData= clickedElement.dataset.note;
+        console.log('note Data: ', noteData);
+        console.log('clickedElement: ', clickedElement);
 
+        if (noteData) {
+            activeNote = JSON.parse(noteData);
+            renderActiveNote();
+        } else {
+            console.log('no note data');
+        }
 }};
   
    
