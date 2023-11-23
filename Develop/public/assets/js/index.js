@@ -163,3 +163,5 @@ if (window.location.pathname === '/notes') {
     noteText.addEventListener('keyup', handleRenderSaveBtn);
     getAndRenderNotes();
 }
+
+noteList.forEach((list) => el.addEventListener('click', handleNoteView));
