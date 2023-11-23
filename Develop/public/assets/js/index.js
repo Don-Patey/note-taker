@@ -121,16 +121,15 @@ const handleNoteDelete = (e) => {
 };
 
 const handleNoteView = (e) => {
-    console.log('handleNoteView');
     e.preventDefault();
     const clickedElement = e.target.closest('.list-group-item');
     if (clickedElement) {
-        const noteData = clickedElement.dataset.note;
-        console.log('note Data:', noteData);
-        console.log('clickedElement:', clickedElement);
+        const noteData = JSON.parse(clickedElement.dataset.note);
+        console.log('note Data: ', noteData);
+        console.log('clickedElement: ', clickedElement);
 
         if (noteData) {
-            activeNote = JSON.parse(noteData);
+            activeNote = noteData;
             renderActiveNote();
         } else {
             console.log('no note data');
