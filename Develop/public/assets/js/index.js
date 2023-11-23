@@ -55,6 +55,7 @@ const saveNote = () => {
         title: noteTitle.value,
         text: noteText.value,
     };
+    console.log('newNote: ', newNote);
     return fetch('/api/notes', {
         method: 'POST',
         headers: {
@@ -133,6 +134,7 @@ const handleRenderSaveBtn = () => {
 };
 
 const renderNoteList = async (notes) => {
+    console.log('notes: ', notes);
     if (window.location.pathname === '/notes') {
         noteList.forEach((list) => {
             list.innerHTML = '';
