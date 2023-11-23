@@ -140,8 +140,6 @@ const handleNoteView = (e) => {
 
 const handleClearForm = () => {
     console.log('clear form');
-    noteTitle.value = '';
-    noteText.value = '';
     activeNote = {};
     renderActiveNote();
 };
