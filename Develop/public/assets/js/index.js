@@ -29,13 +29,17 @@ const createNoNotesEL = () => {
 };
 
 const getNotes = () => {
-   return fetch('/api/notes', {
+    return fetch('/api/notes', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
     })
     .then((response) => response.json())
+    .catch((error) => {
+        console.error('Error fetching notes:', error);
+        throw error; // rethrow the error to propagate it
+    });
 };
 
 const deleteNote = (id) => {
@@ -46,9 +50,13 @@ const deleteNote = (id) => {
         },
     })
     .then(() => {
-        // After deletion, get and render the updated notes
+        console.log('Note deleted successfully:', id);
         getAndRenderNotes();
         renderActiveNote();
+    })
+    .catch((error) => {
+        console.error('Error deleting note:', error);
+        throw error; // rethrow the error to propagate it
     });
 };
 
@@ -57,7 +65,7 @@ const saveNote = () => {
         title: noteTitle.value,
         text: noteText.value,
     };
-    console.log('newNote: ', newNote);
+    console.log('newNote:', newNote);
     return fetch('/api/notes', {
         method: 'POST',
         headers: {
@@ -68,6 +76,10 @@ const saveNote = () => {
     .then(() => {
         getAndRenderNotes();
         renderActiveNote();
+    })
+    .catch((error) => {
+        console.error('Error saving note:', error);
+        throw error; // rethrow the error to propagate it
     });
 };
 
@@ -96,7 +108,7 @@ const handleNoteDelete = (e) => {
     e.stopPropagation();
 
     const note = e.target.closest('li');
-    
+
     if (note) {
         const noteId = JSON.parse(note.dataset.note).id;
 
@@ -112,9 +124,9 @@ const handleNoteView = (e) => {
     e.preventDefault();
     const clickedElement = e.target.closest('li');
     if (clickedElement) {
-        const noteData= clickedElement.dataset.note;
-        console.log('note Data: ', noteData);
-        console.log('clickedElement: ', clickedElement);
+        const noteData = clickedElement.dataset.note;
+        console.log('note Data:', noteData);
+        console.log('clickedElement:', clickedElement);
 
         if (noteData) {
             activeNote = JSON.parse(noteData);
@@ -124,6 +136,7 @@ const handleNoteView = (e) => {
         }
     }
 };
+
 const handleClearForm = () => {
     activeNote = {};
     renderActiveNote();
@@ -143,7 +156,7 @@ const handleRenderSaveBtn = () => {
 };
 
 const renderNoteList = async (notes) => {
-    console.log('notes: ', notes);
+    console.log('notes:', notes);
     if (window.location.pathname === '/notes') {
         noteList.forEach((list) => {
             list.innerHTML = '';
@@ -167,17 +180,24 @@ const renderNoteList = async (notes) => {
     }
 };
 
-const getAndRenderNotes = () => getNotes().then(renderNoteList);
+const getAndRenderNotes = () => {
+    getNotes()
+        .then((notes) => {
+            console.log('Fetched Notes:', notes);
+            renderNoteList(notes);
+        })
+        .catch((error) => {
+            console.error('Error fetching and rendering notes:', error);
+        });
+};
 
 if (window.location.pathname === '/notes') {
     saveNoteBtn.addEventListener('click', handleNoteSave);
     newNoteBtn.addEventListener('click', handleNewNoteView);
     noteTitle.addEventListener('keyup', handleRenderSaveBtn);
     noteText.addEventListener('keyup', handleRenderSaveBtn);
-    clearFormBtn.addEventListener('click', handleNewNoteView);
-
+    clearFormBtn.addEventListener('click', handleClearForm);
+    noteList.forEach((list) => list.addEventListener('click', handleNoteView));
 
     getAndRenderNotes();
 }
-
-noteList.forEach((list) => list.addEventListener('click', handleNoteView));
