@@ -28,16 +28,13 @@ const createNoNotesEL = () => {
 };
 
 const getNotes = () => {
-    fetch('/api/notes', {
+   return fetch('/api/notes', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
     })
     .then((response) => response.json())
-    .then((data) => {
-        renderNoteList(data);
-    });
 };
 
 const deleteNote = (id) => {
