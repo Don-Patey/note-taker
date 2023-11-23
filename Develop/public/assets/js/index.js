@@ -73,6 +73,7 @@ const saveNote = () => {
 
 const renderActiveNote = () => {
     hide(saveNoteBtn);
+    show(newNoteBtn);
 
     if (activeNote.id) {
         noteTitle.setAttribute('readonly', true);
@@ -80,6 +81,8 @@ const renderActiveNote = () => {
         noteTitle.value = activeNote.title;
         noteText.value = activeNote.text;
     } else {
+        noteTitle.removeAttribute('readonly');
+        noteText.removeAttribute('readonly');
         noteTitle.value = '';
         noteText.value = '';
     }
@@ -104,11 +107,8 @@ const handleNoteDelete = (e) => {
 
 const handleNoteView = (e) => {
     e.preventDefault();
-   const clickedElement = e.target.closest('li');
-   if (clickedElement) {
-       activeNote = JSON.parse(clickedElement.dataset.note);
-       renderActiveNote();
-   }
+   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
+    renderActiveNote();
 };
 
 const handleNewNoteView = () => {
