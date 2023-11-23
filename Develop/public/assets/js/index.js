@@ -116,9 +116,9 @@ const handleNoteView = (e) => {
         } else {
             console.log('no note data');
         }
-}};
-  
-   
+    }
+};
+
 const handleNewNoteView = () => {
     activeNote = {};
     renderActiveNote();
@@ -134,9 +134,10 @@ const handleRenderSaveBtn = () => {
 
 const renderNoteList = async (notes) => {
     if (window.location.pathname === '/notes') {
-        noteList.forEach((el) => {
-            el.innerHTML = '';
-    });
+        noteList.forEach((list) => {
+            list.innerHTML = '';
+        });
+    }
 
     let noteListItems = [];
 
@@ -165,4 +166,4 @@ if (window.location.pathname === '/notes') {
     getAndRenderNotes();
 }
 
-noteList.forEach((list) => el.addEventListener('click', handleNoteView));
+noteList.forEach((list) => list.addEventListener('click', handleNoteView));
