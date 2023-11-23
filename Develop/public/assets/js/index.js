@@ -116,9 +116,12 @@ const handleNoteDelete = (e) => {
             activeNote = {};
         }
 
-        deleteNote(noteId);
+        deleteNote(noteId)
+            .then(() => getAndRenderNotes());
     }
 };
+
+
 
 const handleNoteView = (e) => {
     e.preventDefault();
