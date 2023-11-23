@@ -107,10 +107,16 @@ const handleNoteDelete = (e) => {
 
 const handleNoteView = (e) => {
     e.preventDefault();
-   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
-    renderActiveNote();
-};
+    const clickedElement = e.target.closest('li');
+    if (clickedElement) {
+        console.log(clickedElement);
+        console.log(clickedElement.dataset.note);
+        activeNote = JSON.parse(clickedElement.dataset.note);
+        renderActiveNote();
 
+}};
+  
+   
 const handleNewNoteView = () => {
     activeNote = {};
     renderActiveNote();
