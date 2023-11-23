@@ -79,7 +79,7 @@ const saveNote = () => {
     })
     .catch((error) => {
         console.error('Error saving note:', error);
-        throw error; // 
+        throw error; // rethrow the error to propagate it
     });
 };
 
@@ -104,7 +104,7 @@ const handleNoteSave = () => {
     saveNote();
 };
 
-const handleNoteDelete = (e) => {
+const handleNoteDelete = async (e) => {
     e.stopPropagation();
 
     const note = e.target.closest('li');
@@ -116,12 +116,10 @@ const handleNoteDelete = (e) => {
             activeNote = {};
         }
 
-        deleteNote(noteId)
-            .then(() => getAndRenderNotes());
+        await deleteNote(noteId);
+        getAndRenderNotes();
     }
 };
-
-
 
 const handleNoteView = (e) => {
     e.preventDefault();
@@ -140,7 +138,6 @@ const handleNoteView = (e) => {
         }
     }
 };
-
 
 const handleClearForm = () => {
     console.log('clear form');
@@ -202,8 +199,12 @@ if (window.location.pathname === '/notes') {
     newNoteBtn.addEventListener('click', handleNewNoteView);
     noteTitle.addEventListener('keyup', handleRenderSaveBtn);
     noteText.addEventListener('keyup', handleRenderSaveBtn);
-    clearFormBtn.addEventListener('click', handleClearForm);
+
+    if (clearFormBtn) {
+        clearFormBtn.addEventListener('click', handleClearForm);
+    }
+
     noteList.forEach((list) => list.addEventListener('click', handleNoteView));
-    noteList.forEach((list) => list.addEventListener('click', handleNoteDelete));
+
     getAndRenderNotes();
 }
