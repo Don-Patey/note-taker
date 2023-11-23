@@ -64,7 +64,7 @@ const saveNote = () => {
         body: JSON.stringify(newNote),
     })
     .then(() => {
-        getNotes();
+        getAndRenderNotes();
         renderActiveNote();
     });
 };
