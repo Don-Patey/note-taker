@@ -126,6 +126,7 @@ const handleNoteDelete = (e) => {
 const handleNoteView = (e) => {
     e.preventDefault();
     const clickedElement = e.target.closest('.list-group-item');
+
     if (clickedElement) {
         const noteData = JSON.parse(clickedElement.dataset.note);
         console.log('note Data: ', noteData);
@@ -139,6 +140,7 @@ const handleNoteView = (e) => {
         }
     }
 };
+
 
 const handleClearForm = () => {
     console.log('clear form');
@@ -201,7 +203,7 @@ if (window.location.pathname === '/notes') {
     noteTitle.addEventListener('keyup', handleRenderSaveBtn);
     noteText.addEventListener('keyup', handleRenderSaveBtn);
     clearFormBtn.addEventListener('click', handleClearForm);
-  
-
+    noteList.forEach((list) => list.addEventListener('click', handleNoteView));
+    noteList.forEach((list) => list.addEventListener('click', handleNoteDelete));
     getAndRenderNotes();
 }
