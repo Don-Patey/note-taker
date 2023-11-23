@@ -4,7 +4,7 @@ const saveNoteBtn = document.querySelector('.save-note');
 const newNoteBtn = document.querySelector('.new-note');
 const noteList = document.querySelectorAll('.list-container .list-group');
 
-const activeNote = {};
+let activeNote = {};
 
 const show = (elem) => {
     elem.style.display = 'inline';
