@@ -45,7 +45,8 @@ const deleteNote = (id) => {
         },
     })
     .then(() => {
-        getNotes();
+        // After deletion, get and render the updated notes
+        getAndRenderNotes();
         renderActiveNote();
     });
 };
@@ -93,14 +94,17 @@ const handleNoteSave = () => {
 const handleNoteDelete = (e) => {
     e.stopPropagation();
 
-    const note = e.target;
-    const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+    const note = e.target.closest('li');
+    
+    if (note) {
+        const noteId = JSON.parse(note.dataset.note).id;
 
-    if (activeNote.id === noteId) {
-        activeNote = {};
+        if (activeNote.id === noteId) {
+            activeNote = {};
+        }
+
+        deleteNote(noteId);
     }
-
-    deleteNote(noteId);
 };
 
 const handleNoteView = (e) => {
