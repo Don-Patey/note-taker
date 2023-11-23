@@ -3,6 +3,7 @@ const noteText = document.querySelector('.note-textarea');
 const saveNoteBtn = document.querySelector('.save-note');
 const newNoteBtn = document.querySelector('.new-note');
 const noteList = document.querySelectorAll('.list-container .list-group');
+const clearFormBtn = document.querySelector('.clear-form');
 
 let activeNote = {};
 
@@ -123,6 +124,10 @@ const handleNoteView = (e) => {
         }
     }
 };
+const handleClearForm = () => {
+    activeNote = {};
+    renderActiveNote();
+};
 
 const handleNewNoteView = () => {
     activeNote = {};
@@ -169,6 +174,9 @@ if (window.location.pathname === '/notes') {
     newNoteBtn.addEventListener('click', handleNewNoteView);
     noteTitle.addEventListener('keyup', handleRenderSaveBtn);
     noteText.addEventListener('keyup', handleRenderSaveBtn);
+    clearFormBtn.addEventListener('click', handleNewNoteView);
+
+
     getAndRenderNotes();
 }
 
