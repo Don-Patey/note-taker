@@ -140,7 +140,12 @@ const handleNoteView = (e) => {
 };
 
 const handleClearForm = () => {
-    console.log('clear form');
+    clearForm();
+};
+
+const clearForm = () => {
+    noteTitle.value = '';
+    noteText.value = '';
     activeNote = {};
     renderActiveNote();
 };

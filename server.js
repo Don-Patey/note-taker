@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const fs = require('fs').promises; // Using fs.promises for async file operations
+const fs = require('fs').promises; // Use promises version for async file operations
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -12,12 +12,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, 'notes.html'));
+    res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
 app.get('/api/notes', async (req, res) => {
     try {
-        const data = await fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8');
+        const data = await fs.readFile('./db/db.json', 'utf8');
         res.json(JSON.parse(data));
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -25,22 +25,22 @@ app.get('/api/notes', async (req, res) => {
 });
 
 const generateId = () => {
-    return Math.floor((1 + Math.random()) * 10000).toString(15).substring(1);
+    return Math.floor((1 + Math.random()) * 10000).toString(16).substring(1);
 };
 
 app.post('/api/notes', async (req, res) => {
     try {
-        const data = await fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8');
-        const notes = JSON.parse(data);
-        const newNoteId = generateId();
-        const newNote = {
+        const data = await fs.readFile('./db/db.json', 'utf8');
+        let allNotes = JSON.parse(data);
+        let newNoteId = generateId();
+        let newNote = {
             title: req.body.title,
             text: req.body.text,
             id: newNoteId,
         };
-        notes.push(newNote);
-        await fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes, null, 2));
-        res.json(newNote);
+        allNotes.push(newNote);
+        await fs.writeFile('./db/db.json', JSON.stringify(allNotes), 'utf8');
+        res.json(allNotes);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -48,10 +48,10 @@ app.post('/api/notes', async (req, res) => {
 
 app.delete('/api/notes/:id', async (req, res) => {
     try {
-        const data = await fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8');
+        const data = await fs.readFile('./db/db.json', 'utf8');
         const notes = JSON.parse(data);
         const newNotes = notes.filter((note) => note.id !== req.params.id);
-        await fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(newNotes, null, 2));
+        await fs.writeFile('./db/db.json', JSON.stringify(newNotes, null, 2), 'utf8');
         res.json(newNotes);
     } catch (err) {
         res.status(500).json({ error: err.message });
